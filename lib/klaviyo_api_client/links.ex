@@ -1,9 +1,9 @@
-defmodule KlaviyoClient.Links do
+defmodule KlaviyoApiClient.Links do
   use Ecto.Schema
 
   import Ecto.Changeset, only: [cast: 3]
 
-  alias KlaviyoClient.Ecto.Types.URI
+  alias KlaviyoApiClient.Ecto.Types.URI
 
   @primary_key false
   embedded_schema do

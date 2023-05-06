@@ -1,9 +1,9 @@
-defmodule KlaviyoClient do
+defmodule KlaviyoApiClient do
   @moduledoc """
-  Documentation for `KlaviyoClient`.
+  Documentation for `KlaviyoApiClient`.
   """
 
-  alias KlaviyoClient.Links
+  alias KlaviyoApiClient.Links
 
   @spec list_metrics(binary, map) :: {:ok, map()} | {:error, binary}
   def list_metrics(access_token, %{} = query_params) do
@@ -43,7 +43,7 @@ defmodule KlaviyoClient do
 
   defp request(%{method: method, resource: resource, headers: headers, body: body}, opts) do
     AntlHttpClient.request(
-      KlaviyoClientFinch,
+      KlaviyoApiClientFinch,
       "klaviyo",
       %{
         method: method,
@@ -61,7 +61,7 @@ defmodule KlaviyoClient do
   defp base_headers() do
     %{
       "content-type" => "application/json",
-      "user-agent" => "KlaviyoClient/1.0; +(https://github.com/elielhaouzi/klaviyo_client)"
+      "user-agent" => "KlaviyoApiClient/1.0; +(https://github.com/elielhaouzi/klaviyo_client)"
     }
     |> put_revision_header()
   end

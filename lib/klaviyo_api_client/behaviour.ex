@@ -1,4 +1,4 @@
-defmodule KlaviyoClient.Behaviour do
+defmodule KlaviyoApiClient.Behaviour do
   @moduledoc false
 
   # @callback login(binary, binary, binary) :: {:ok, binary} | {:error, binary}

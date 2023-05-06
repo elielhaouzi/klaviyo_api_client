@@ -1,4 +1,4 @@
-defmodule KlaviyoClient.Ecto.Types.URI do
+defmodule KlaviyoApiClient.Ecto.Types.URI do
   use Ecto.Type
   def type, do: :map
 

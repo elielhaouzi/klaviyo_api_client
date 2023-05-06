@@ -1,4 +1,4 @@
-defmodule KlaviyoClient.Supervisor do
+defmodule KlaviyoApiClient.Supervisor do
   @moduledoc false
 
   use Supervisor
@@ -10,7 +10,7 @@ defmodule KlaviyoClient.Supervisor do
   @impl true
   def init(_) do
     children = [
-      AntlHttpClient.insecure_finch_child_spec(KlaviyoClientFinch)
+      AntlHttpClient.insecure_finch_child_spec(KlaviyoApiClientFinch)
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
