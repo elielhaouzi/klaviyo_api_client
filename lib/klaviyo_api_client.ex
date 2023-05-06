@@ -61,7 +61,7 @@ defmodule KlaviyoApiClient do
   defp base_headers() do
     %{
       "content-type" => "application/json",
-      "user-agent" => "KlaviyoApiClient/1.0; +(https://github.com/elielhaouzi/klaviyo_client)"
+      "user-agent" => "KlaviyoApiClient/1.0; +(https://github.com/elielhaouzi/klaviyo_api_client)"
     }
     |> put_revision_header()
   end
@@ -71,8 +71,8 @@ defmodule KlaviyoApiClient do
   end
 
   defp put_revision_header(headers), do: headers |> Map.put("revision", "#{revision()}")
-  defp base_url(), do: Application.fetch_env!(:klaviyo_client, :base_url)
-  defp logger(), do: Application.get_env(:klaviyo_client, :logger, Logger)
-  defp receive_timeout(), do: Application.get_env(:klaviyo_client, :receive_timeout, 50_000)
-  defp revision(), do: Application.fetch_env!(:klaviyo_client, :revision)
+  defp base_url(), do: Application.fetch_env!(:klaviyo_api_client, :base_url)
+  defp logger(), do: Application.get_env(:klaviyo_api_client, :logger, Logger)
+  defp receive_timeout(), do: Application.get_env(:klaviyo_api_client, :receive_timeout, 50_000)
+  defp revision(), do: Application.fetch_env!(:klaviyo_api_client, :revision)
 end
