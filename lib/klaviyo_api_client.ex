@@ -71,7 +71,7 @@ defmodule KlaviyoApiClient do
     end
   end
 
-  @spec create_profile(binary, map) :: {:ok, nil} | {:error, tuple}
+  @spec create_profile(binary, map) :: {:ok, map()} | {:error, tuple}
   def create_profile(access_token, %{} = body) do
     params = %{
       method: :post,
