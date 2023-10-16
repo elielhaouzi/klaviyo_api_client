@@ -71,6 +71,24 @@ defmodule KlaviyoApiClient do
     end
   end
 
+  @spec create_profile(binary, map) :: {:ok, nil} | {:error, map}
+  def create_profile(access_token, %{} = body) do
+    params = %{
+      method: :post,
+      resource: "#{base_url()}/profiles",
+      headers: base_headers() |> put_authorization_header(access_token),
+      body: body
+    }
+
+    opts = [obfuscate_keys: ["authorization"]]
+
+    request(params, opts)
+    |> case do
+      {:ok, ""} -> {:ok, nil}
+      error -> error
+    end
+  end
+
   defp handle_list_response(response, fun) do
     with {:ok, %{"links" => links, "data" => data}} <- response do
       {:ok, %{"links" => Links.new!(links), "data" => Enum.map(data, fun)}}
