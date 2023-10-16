@@ -5,6 +5,7 @@ defmodule KlaviyoApiClient do
 
   alias KlaviyoApiClient.Events.Event
   alias KlaviyoApiClient.Metrics.Metric
+  alias KlaviyoApiClient.Profiles.Profile
   alias KlaviyoApiClient.Links
 
   @spec list_metrics(binary, map) :: {:ok, map()} | {:error, binary | map()}
@@ -35,6 +36,21 @@ defmodule KlaviyoApiClient do
 
     request(params, opts)
     |> handle_list_response(&Event.new!/1)
+  end
+
+  @spec list_profiles(binary, map) :: {:ok, map()} | {:error, binary | map()}
+  def list_profiles(access_token, %{} = query_params) do
+    params = %{
+      method: :get,
+      resource: "#{base_url()}/profiles" <> "?" <> URI.encode_query(query_params),
+      headers: base_headers() |> put_authorization_header(access_token),
+      body: %{}
+    }
+
+    opts = [obfuscate_keys: ["authorization"]]
+
+    request(params, opts)
+    |> handle_list_response(&Profile.new!/1)
   end
 
   @spec create_event(binary, map) :: {:ok, nil} | {:error, map}
