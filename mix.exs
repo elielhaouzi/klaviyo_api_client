@@ -26,9 +26,7 @@ defmodule KlaviyoApiClient.MixProject do
 
   defp deps do
     [
-      {:antl_http_client, git: "https://github.com/annatel/antl_http_client.git"},
-      {:antl_utils_ecto, "~> 2.8"}
-      # {:antl_utils_elixir, "~> 1.4"},
+      {:antl_http_client, git: "https://github.com/annatel/antl_http_client.git"}
       # {:bypass, "~> 2.1.0", only: :test},
       # {:hammox, "~> 0.5", only: :test}
     ]
