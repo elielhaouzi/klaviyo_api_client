@@ -53,7 +53,7 @@ defmodule KlaviyoApiClient do
     |> handle_list_response(&Profile.new!/1)
   end
 
-  @spec create_event(binary, map) :: {:ok, nil} | {:error, map}
+  @spec create_event(binary, map) :: {:ok, nil} | {:error, tuple}
   def create_event(access_token, %{} = body) do
     params = %{
       method: :post,
@@ -71,7 +71,7 @@ defmodule KlaviyoApiClient do
     end
   end
 
-  @spec create_profile(binary, map) :: {:ok, nil} | {:error, map}
+  @spec create_profile(binary, map) :: {:ok, nil} | {:error, tuple}
   def create_profile(access_token, %{} = body) do
     params = %{
       method: :post,
