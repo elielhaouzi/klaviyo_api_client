@@ -1,6 +1,7 @@
 defmodule KlaviyoApiClient.Behaviour do
   @moduledoc false
 
-  # @callback login(binary, binary, binary) :: {:ok, binary} | {:error, binary}
-  # @callback create_user(binary, map) :: {:ok, User.t()} | {:error, binary | Ecto.Changeset.t()}
+  @callback list_metrics(binary, map) :: {:ok, map()} | {:error, binary | map()}
+  @callback list_events(binary, map) :: {:ok, map()} | {:error, binary | map()}
+  @callback create_event(binary, map) :: {:ok, map()} | {:error, map}
 end

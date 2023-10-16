@@ -3,9 +3,11 @@ defmodule KlaviyoApiClient do
   Documentation for `KlaviyoApiClient`.
   """
 
+  alias KlaviyoApiClient.Events.Event
+  alias KlaviyoApiClient.Metrics.Metric
   alias KlaviyoApiClient.Links
 
-  @spec list_metrics(binary, map) :: {:ok, map()} | {:error, binary}
+  @spec list_metrics(binary, map) :: {:ok, map()} | {:error, binary | map()}
   def list_metrics(access_token, %{} = query_params) do
     params = %{
       method: :get,
@@ -17,10 +19,10 @@ defmodule KlaviyoApiClient do
     opts = [obfuscate_keys: ["authorization"]]
 
     request(params, opts)
-    |> handle_response()
+    |> handle_list_response(&Metric.new!/1)
   end
 
-  @spec list_events(binary, map) :: {:ok, map()} | {:error, binary}
+  @spec list_events(binary, map) :: {:ok, map()} | {:error, binary | map()}
   def list_events(access_token, %{} = query_params) do
     params = %{
       method: :get,
@@ -32,18 +34,36 @@ defmodule KlaviyoApiClient do
     opts = [obfuscate_keys: ["authorization"]]
 
     request(params, opts)
-    |> handle_response()
+    |> handle_list_response(&Event.new!/1)
   end
 
-  defp handle_response(response) do
+  @spec create_event(binary, map) :: {:ok, nil} | {:error, map}
+  def create_event(access_token, %{} = body) do
+    params = %{
+      method: :post,
+      resource: "#{base_url()}/events",
+      headers: base_headers() |> put_authorization_header(access_token),
+      body: body
+    }
+
+    opts = [obfuscate_keys: ["authorization"]]
+
+    request(params, opts)
+    |> case do
+      {:ok, ""} -> {:ok, nil}
+      error -> error
+    end
+  end
+
+  defp handle_list_response(response, fun) do
     with {:ok, %{"links" => links, "data" => data}} <- response do
-      {:ok, %{"links" => Links.new!(links), "data" => data}}
+      {:ok, %{"links" => Links.new!(links), "data" => Enum.map(data, fun)}}
     end
   end
 
   defp request(%{method: method, resource: resource, headers: headers, body: body}, opts) do
     AntlHttpClient.request(
-      KlaviyoApiClientFinch,
+      finch_instance(),
       "klaviyo",
       %{
         method: method,
@@ -71,6 +91,10 @@ defmodule KlaviyoApiClient do
   end
 
   defp put_revision_header(headers), do: headers |> Map.put("revision", "#{revision()}")
+
+  defp finch_instance(),
+    do: Application.get_env(:klaviyo_api_client, :finch_instance, KlaviyoApiClientFinch)
+
   defp base_url(), do: Application.fetch_env!(:klaviyo_api_client, :base_url)
   defp logger(), do: Application.get_env(:klaviyo_api_client, :logger, Logger)
   defp receive_timeout(), do: Application.get_env(:klaviyo_api_client, :receive_timeout, 50_000)
