@@ -89,6 +89,24 @@ defmodule KlaviyoApiClient do
     end
   end
 
+  @spec update_profile(binary, binary, map) :: {:ok, map()} | {:error, tuple}
+  def update_profile(access_token, profile_id, %{} = body) when is_binary(profile_id) do
+    params = %{
+      method: :patch,
+      resource: "#{base_url()}/profiles/#{profile_id}",
+      headers: base_headers() |> put_authorization_header(access_token),
+      body: body
+    }
+
+    opts = [obfuscate_keys: ["authorization"]]
+
+    request(params, opts)
+    |> case do
+      {:ok, ""} -> {:ok, nil}
+      error -> error
+    end
+  end
+
   defp handle_list_response(response, fun) do
     with {:ok, %{"links" => links, "data" => data}} <- response do
       {:ok, %{"links" => Links.new!(links), "data" => Enum.map(data, fun)}}
