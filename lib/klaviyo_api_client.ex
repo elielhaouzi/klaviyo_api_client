@@ -2,6 +2,7 @@ defmodule KlaviyoApiClient do
   @moduledoc """
   Documentation for `KlaviyoApiClient`.
   """
+  @behaviour KlaviyoApiClient.Behaviour
 
   alias KlaviyoApiClient.Events.Event
   alias KlaviyoApiClient.Metrics.Metric
