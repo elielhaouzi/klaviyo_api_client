@@ -14,7 +14,7 @@ defmodule KlaviyoApiClient.Profiles.ProfileAttributes do
     field(:image, :string)
     field(:last_name, :string)
     field(:organization, :string)
-    field(:phone_number, :string)
+    # field(:phone_number, :string)
     field(:properties, :map)
     field(:title, :string)
     embeds_one(:location, ProfileLocation)
@@ -30,7 +30,7 @@ defmodule KlaviyoApiClient.Profiles.ProfileAttributes do
       :image,
       :last_name,
       :organization,
-      :phone_number,
+      # :phone_number,
       :properties,
       :title
     ])
