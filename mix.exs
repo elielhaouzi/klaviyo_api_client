@@ -1,7 +1,7 @@
 defmodule KlaviyoApiClient.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.3.0"
 
   def project do
     [
@@ -27,7 +27,7 @@ defmodule KlaviyoApiClient.MixProject do
   defp deps do
     [
       {:ecto, "~> 3.10"},
-      {:antl_http_client, github: "elielhaouzi/antl_http_client", branch: "main"}
+      {:req, "~> 0.5"}
       # {:bypass, "~> 2.1.0", only: :test},
       # {:hammox, "~> 0.5", only: :test}
     ]
