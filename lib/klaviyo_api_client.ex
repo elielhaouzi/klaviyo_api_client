@@ -98,8 +98,8 @@ defmodule KlaviyoApiClient do
     end
   end
 
-  @spec bulk_subscribe_profiles(binary, map) :: {:ok, map()} | {:error, tuple}
-  def bulk_subscribe_profiles(api_key, %{} = body) do
+  @spec subscribe_profiles(binary, map) :: {:ok, map()} | {:error, tuple}
+  def subscribe_profiles(api_key, %{} = body) do
     new_req(base_url: api_base_url())
     |> Req.request(
       method: :post,
