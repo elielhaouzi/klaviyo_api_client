@@ -1,9 +1,10 @@
 defmodule KlaviyoApiClient.Profiles.ProfileAttributes do
   use Ecto.Schema
 
-  import Ecto.Changeset, only: [cast: 3]
+  import Ecto.Changeset, only: [cast: 3, cast_embed: 2]
 
   alias KlaviyoApiClient.Profiles.ProfileLocation
+  alias KlaviyoApiClient.Profiles.ProfileSubscriptions
 
   @primary_key false
   @derive Jason.Encoder
@@ -18,9 +19,10 @@ defmodule KlaviyoApiClient.Profiles.ProfileAttributes do
     field(:properties, :map)
     field(:title, :string)
     embeds_one(:location, ProfileLocation)
+    embeds_one(:subscriptions, ProfileSubscriptions)
   end
 
-  @spec changeset(Profile.t(), map) :: Ecto.Changeset.t()
+  @spec changeset(ProfileAttributes.t(), map) :: Ecto.Changeset.t()
   def changeset(%__MODULE__{} = profile_attributes, attrs) when is_map(attrs) do
     profile_attributes
     |> cast(attrs, [
@@ -34,5 +36,7 @@ defmodule KlaviyoApiClient.Profiles.ProfileAttributes do
       :properties,
       :title
     ])
+    |> cast_embed(:location)
+    |> cast_embed(:subscriptions)
   end
 end

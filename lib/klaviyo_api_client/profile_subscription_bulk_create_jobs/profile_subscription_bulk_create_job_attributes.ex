@@ -3,13 +3,15 @@ defmodule KlaviyoApiClient.ProfileSubscriptionBulkCreateJobs.ProfileSubscription
 
   import Ecto.Changeset, only: [cast: 3, cast_embed: 2, cast_embed: 3]
 
+  alias KlaviyoApiClient.Profiles.Profile
+
   @primary_key false
   @derive Jason.Encoder
   embedded_schema do
     field(:custom_source, :string)
     field(:historical_import, :boolean, default: false)
 
-    embeds_one :profiles, ProfileData do
+    embeds_one :profiles, ProfilesData, primary_key: false do
       embeds_many(:data, Profile)
     end
   end

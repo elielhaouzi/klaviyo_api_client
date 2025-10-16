@@ -1,9 +1,10 @@
 defmodule KlaviyoApiClient.ProfileSubscriptionBulkCreateJobs.ProfileSubscriptionBulkCreateJob do
   use Ecto.Schema
 
-  import Ecto.Changeset, only: [cast: 3, cast_embed: 3]
+  import Ecto.Changeset, only: [cast: 3, cast_embed: 2, cast_embed: 3]
 
   alias KlaviyoApiClient.ProfileSubscriptionBulkCreateJobs.ProfileSubscriptionBulkCreateJobAttributes
+  alias KlaviyoApiClient.Lists.List
 
   @primary_key false
   @derive Jason.Encoder
@@ -11,6 +12,13 @@ defmodule KlaviyoApiClient.ProfileSubscriptionBulkCreateJobs.ProfileSubscription
     field(:id, :string)
     embeds_one(:attributes, ProfileSubscriptionBulkCreateJobAttributes)
     field(:type, :string, default: "profile-subscription-bulk-create-job")
+
+    embeds_one :relationships, ProfileSubscriptionBulkCreateJobRelationships,
+      primary_key: false do
+      embeds_one :list, ListData, primary_key: false do
+        embeds_one(:data, List)
+      end
+    end
   end
 
   @spec new!(map) :: ProfileSubscriptionBulkCreateJob.t()
@@ -28,5 +36,18 @@ defmodule KlaviyoApiClient.ProfileSubscriptionBulkCreateJobs.ProfileSubscription
     profile_subscription_bulk_create_job
     |> cast(attrs, [:id])
     |> cast_embed(:attributes, required: false)
+    |> cast_embed(:relationships, required: true, with: &relationships_changeset/2)
+  end
+
+  defp relationships_changeset(schema, params) do
+    schema
+    |> cast(params, [])
+    |> cast_embed(:list, required: true, with: &list_changeset/2)
+  end
+
+  defp list_changeset(schema, params) do
+    schema
+    |> cast(params, [])
+    |> cast_embed(:data)
   end
 end
