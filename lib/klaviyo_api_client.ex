@@ -57,7 +57,7 @@ defmodule KlaviyoApiClient do
       method: :post,
       url: "/events",
       json: body,
-      auth: {:string, api_key}
+      auth: api_key_header_value(api_key)
     )
     |> handle_response()
     |> case do
