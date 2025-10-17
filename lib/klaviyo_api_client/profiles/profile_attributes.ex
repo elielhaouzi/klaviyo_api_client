@@ -4,7 +4,6 @@ defmodule KlaviyoApiClient.Profiles.ProfileAttributes do
   import Ecto.Changeset, only: [cast: 3, cast_embed: 2]
 
   alias KlaviyoApiClient.Profiles.ProfileLocation
-  alias KlaviyoApiClient.Profiles.ProfileSubscriptions
 
   @primary_key false
   @derive Jason.Encoder
@@ -19,7 +18,6 @@ defmodule KlaviyoApiClient.Profiles.ProfileAttributes do
     field(:properties, :map)
     field(:title, :string)
     embeds_one(:location, ProfileLocation)
-    embeds_one(:subscriptions, ProfileSubscriptions)
   end
 
   @spec changeset(ProfileAttributes.t(), map) :: Ecto.Changeset.t()
@@ -37,6 +35,5 @@ defmodule KlaviyoApiClient.Profiles.ProfileAttributes do
       :title
     ])
     |> cast_embed(:location)
-    |> cast_embed(:subscriptions)
   end
 end
